@@ -1,95 +1,131 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Col, Pagination, Row, message } from "antd";
+import axios from "axios";
 
-export default function Home() {
+import Divider from "@/components/Divider";
+import { useRouter } from "next/navigation";
+import { SetLoading } from "@/redux/loaderSlice";
+import PageTitle from "@/components/PageTitle";
+import Filters from "@/components/Filters";
+
+function Home() {
+  const [jobs = [], setJobs] = useState([]);
+  const [filters, setFilters] = useState<any>({
+    searchText: "",
+    location: "",
+  });
+
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  const [totalJobs, setTotalJobs] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 6; // Number of items per page
+
+  const fetchJobs = async (page = 1) => {
+    try {
+      dispatch(SetLoading(true));
+      const params = {
+        searchText: filters.searchText,
+        location: filters.location,
+        pageSize,
+        page,
+      };
+
+      const response = await axios.get("/api/v1/jobs", {
+        params: params,
+      });
+
+      setJobs(response.data.data);
+      setTotalJobs(response.data.total);
+    } catch (error: any) {
+      message.error(error.message);
+    } finally {
+      dispatch(SetLoading(false));
+    }
+  };
+
+  const handlePageChange = (page: any) => {
+    setCurrentPage(page);
+    fetchJobs((page = 1));
+  };
+
+  const handleReset = async () => {
+    const params = {
+      searchText: "",
+      location: "",
+    };
+
+    const response = await axios.get("/api/v1/jobs", {
+      params: params,
+    });
+
+    setJobs(response.data.data);
+    setFilters({ searchText: "", location: "" });
+  };
+
+  useEffect(() => {
+    fetchJobs();
+  }, []);
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div>
+      <PageTitle title="DashBoard" />
+
+      <Filters
+        filters={filters}
+        setFilters={setFilters}
+        getData={fetchJobs}
+        handleReset={handleReset}
+      />
+
+      <Row gutter={[16, 16]}>
+        {jobs.map((job: any) => (
+          <Col
+            span={8}
+            className="p-2"
+            key={job._id}
+            onClick={() => router.push(`/jobInfo/${job._id}`)}
           >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+            <div className="card flex flex-col gap-2 cursor-pointer p-3">
+              <h1 className="text-md">{job.title}</h1>
+              <Divider />
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+              <div className="flex justify-between">
+                <span>Company</span>
+                <span>{job.user.name}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Location</span>
+                <span>{job.location}</span>
+              </div>
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
+              <div className="flex justify-between">
+                <span>Salary</span>
+                <span>
+                  {job.salaryFromRange} LPA - {job.salaryToRange} LPA
+                </span>
+              </div>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+              <div className="flex justify-between">
+                <span>Work Mode</span>
+                <span>{job.workMode}</span>
+              </div>
+            </div>
+          </Col>
+        ))}
+      </Row>
+      <Pagination
+        className=" flex justify-end my-3"
+        current={currentPage}
+        total={totalJobs}
+        pageSize={pageSize}
+        onChange={handlePageChange}
+        showSizeChanger={false}
+      />
+    </div>
   );
 }
+
+export default Home;
