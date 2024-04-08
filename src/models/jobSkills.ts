@@ -17,10 +17,10 @@ const skillSchema = new mongoose.Schema(
 );
 
 // delete old model
-if (mongoose.models.skills) {
-  const skillsModel = mongoose.model("skills");
-  mongoose.deleteModel(skillsModel.modelName);
-}
+// if (mongoose.models.skills) {
+//   const skillsModel = mongoose.model("skills");
+//   mongoose.deleteModel(skillsModel.modelName);
+// }
 
 // create new model
 const skills = mongoose.model("skills", skillSchema);
