@@ -76,10 +76,10 @@ const userSchema = new mongoose.Schema(
 );
 
 // delete old model
-// if (mongoose.models.users) {
-//   const userModel = mongoose.model("users");
-//   mongoose.deleteModel(userModel.modelName);
-// }
+if (mongoose.models.users) {
+  const userModel = mongoose.model("users");
+  mongoose.deleteModel(userModel.modelName);
+}
 
 // create new model
 const User = mongoose.model("users", userSchema);

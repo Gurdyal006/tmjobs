@@ -48,10 +48,10 @@ const jobSchema = new mongoose.Schema(
 );
 
 // delete old model
-// if (mongoose.models.jobs) {
-//   const jobModel = mongoose.model("jobs");
-//   mongoose.deleteModel(jobModel.modelName);
-// }
+if (mongoose.models.jobs) {
+  const jobModel = mongoose.model("jobs");
+  mongoose.deleteModel(jobModel.modelName);
+}
 
 // create new model
 const Job = mongoose.model("jobs", jobSchema);
