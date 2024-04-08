@@ -19,10 +19,10 @@ const applicationSchema = new mongoose.Schema(
 );
 
 // delete old model
-// if (mongoose.models.applications) {
-//   const applicationModel = mongoose.model("applications");
-//   mongoose.deleteModel(applicationModel.modelName);
-// }
+if (mongoose.models.applications) {
+  const applicationModel = mongoose.model("applications");
+  mongoose.deleteModel(applicationModel.modelName);
+}
 
 // create new model
 const Application = mongoose.model("applications", applicationSchema);

@@ -75,20 +75,12 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-// Delete old model if it exists
-delete mongoose.models["users"];
+// delete old model
+if (mongoose.models.users) {
+  const userModel = mongoose.model("users");
+  mongoose.deleteModel(userModel.modelName);
+}
 
-// Create new model
+// create new model
 const User = mongoose.model("users", userSchema);
-
 export default User;
-
-// // delete old model
-// if (mongoose.models.users) {
-//   const userModel = mongoose.model("users");
-//   mongoose.deleteModel(userModel.modelName);
-// }
-
-// // create new model
-// const User = mongoose.model("users", userSchema);
-// export default User;
