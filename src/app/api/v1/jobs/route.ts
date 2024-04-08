@@ -30,17 +30,17 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
 
     const searchText: any = searchParams.get("searchText");
-    // const location: any = searchParams.get("location");
+    const location: any = searchParams.get("location");
 
     const filterObject: any = {};
 
-    if (searchText.trim() !== "") {
+    if (searchText && searchText.trim() !== "") {
       filterObject["title"] = { $regex: searchText.trim(), $options: "i" };
     }
 
-    // if (location.trim() !== "") {
-    //   filterObject["location"] = { $regex: location.trim(), $options: "i" };
-    // }
+    if (location && location.trim() !== "") {
+      filterObject["location"] = { $regex: location.trim(), $options: "i" };
+    }
 
     // for pagination
     const page: number = parseInt(searchParams.get("page") || "1", 10);
@@ -61,8 +61,6 @@ export async function GET(request: NextRequest) {
       total: JobsTotal,
     });
   } catch (error: any) {
-    console.log("errorororororo----------", error);
-
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }

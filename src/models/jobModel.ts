@@ -47,6 +47,13 @@ const jobSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+delete mongoose.models["jobs"];
+
+// Create new model
+const Job = mongoose.model("jobs", jobSchema);
+
+export default Job;
+
 // delete old model
 // if (mongoose.models.jobs) {
 //   const jobModel = mongoose.model("jobs");
@@ -54,5 +61,5 @@ const jobSchema = new mongoose.Schema(
 // }
 
 // create new model
-const Job = mongoose.model("jobs", jobSchema);
-export default Job;
+// const Job = mongoose.model("jobs", jobSchema);
+// export default Job;
