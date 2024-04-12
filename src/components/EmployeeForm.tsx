@@ -86,10 +86,8 @@ function EmployeeForm() {
               <option value="none" selected disabled hidden>
                 Select Job Type
               </option>
-              {/* {console.log(skillData, "skillData")} */}
               {skillData &&
                 skillData.map((item: any) => (
-                  // eslint-disable-next-line react/jsx-key
                   <option key={item._id} value={item.title}>
                     {item.title}
                   </option>

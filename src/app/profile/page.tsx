@@ -39,7 +39,8 @@ function Profile() {
         initialValues={currentUser}
         onFinish={onUpdateUser}
       >
-        {currentUser?.userType === "employer" ? (
+        {typeof document !== "undefined" &&
+        currentUser?.userType === "employer" ? (
           <EmployerForm />
         ) : (
           <EmployeeForm />
