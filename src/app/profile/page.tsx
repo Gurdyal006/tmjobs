@@ -9,17 +9,22 @@ import { Button, Form, message } from "antd";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 
-const EmployeeForm = dynamic(() => import("@/components/EmployeeForm"), {
-  ssr: false, // This ensures that EmployeeForm is not included during server-side rendering
+const DynamicEmployeeForm = dynamic(() => import("@/components/EmployeeForm"), {
+  ssr: false,
 });
-
-const EmployerForm = dynamic(() => import("@/components/EmployerForm"), {
-  ssr: false, // This ensures that EmployerForm is not included during server-side rendering
+const DynamicEmployerForm = dynamic(() => import("@/components/EmployerForm"), {
+  ssr: false,
 });
 
 function Profile() {
   const { currentUser } = useSelector((state: any) => state.users);
+  const [isBrowser, setIsBrowser] = useState<any>(false); // To track if the code is running in the browser
+
+  useEffect(() => {
+    setIsBrowser(true); // Set isBrowser to true when component mounts (i.e., when running in the browser)
+  }, []);
 
   const dispatch = useDispatch();
 
@@ -48,12 +53,17 @@ function Profile() {
         initialValues={currentUser}
         onFinish={onUpdateUser}
       >
-        {typeof document !== "undefined" &&
+        {isBrowser && currentUser?.userType === "employer" ? (
+          <DynamicEmployerForm />
+        ) : (
+          <DynamicEmployeeForm />
+        )}
+        {/* {typeof document !== "undefined" &&
         currentUser?.userType === "employer" ? (
           <EmployerForm />
         ) : (
           <EmployeeForm />
-        )}
+        )} */}
         <div className="flex justify-end my-3">
           <Button type="primary" htmlType="submit">
             Save
