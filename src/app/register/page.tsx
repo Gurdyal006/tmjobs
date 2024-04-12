@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useDispatch } from "react-redux";
+import { motion } from "framer-motion";
 
 function Register() {
   const dispatch = useDispatch();
@@ -27,8 +28,13 @@ function Register() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-primary">
-      <div className="card p-5 w-450">
+    <div className="flex justify-center items-center h-screen">
+      <motion.div
+        initial={{ opacity: 0, y: -100 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 1 * 0.1 }}
+        className="card p-5 w-450"
+      >
         <h1 className="text-xl">TMJobs-Register</h1>
         <hr />
         <Form
@@ -57,7 +63,7 @@ function Register() {
           </Button>
           <Link href="/login">Already have an account? Login</Link>
         </Form>
-      </div>
+      </motion.div>
     </div>
   );
 }
