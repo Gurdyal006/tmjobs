@@ -1,13 +1,22 @@
 "use client";
 
-import EmployeeForm from "@/components/EmployeeForm";
-import EmployerForm from "@/components/EmployerForm";
+// import EmployeeForm from "@/components/EmployeeForm";
+// import EmployerForm from "@/components/EmployerForm";
 import PageTitle from "@/components/PageTitle";
 import { SetLoading } from "@/redux/loaderSlice";
 import { SetCurrentUser } from "@/redux/usersSlice";
 import { Button, Form, message } from "antd";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import dynamic from "next/dynamic";
+
+const EmployeeForm = dynamic(() => import("@/components/EmployeeForm"), {
+  ssr: false, // This ensures that EmployeeForm is not included during server-side rendering
+});
+
+const EmployerForm = dynamic(() => import("@/components/EmployerForm"), {
+  ssr: false, // This ensures that EmployerForm is not included during server-side rendering
+});
 
 function Profile() {
   const { currentUser } = useSelector((state: any) => state.users);
