@@ -1,8 +1,27 @@
 import { Col, Form, Row } from "antd";
-import TextArea from "antd/es/input/TextArea";
+// import TextArea from "antd/es/input/TextArea";
 import React from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 function EmployerForm() {
+  // Define modules with custom toolbar options
+  const modules = {
+    toolbar: [
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      [{ font: [] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [
+        { list: "ordered" },
+        { list: "bullet" },
+        { indent: "-1" },
+        { indent: "+1" },
+      ],
+      ["link", "image", "video"],
+      ["clean"],
+    ],
+  };
+
   return (
     <>
       <Row gutter={[16, 16]}>
@@ -79,27 +98,79 @@ function EmployerForm() {
           </Form.Item>
         </Col>
 
+        <Col span={8}>
+          <Form.Item
+            label="City"
+            name="city"
+            rules={[{ required: true, message: "Please Enter City " }]}
+          >
+            <input type="text" />
+          </Form.Item>
+        </Col>
+
+        <Col span={8}>
+          <Form.Item
+            label="State"
+            name="state"
+            rules={[{ required: true, message: "Please Enter State name" }]}
+          >
+            <input type="text" />
+          </Form.Item>
+        </Col>
+
+        <Col span={8}>
+          <Form.Item
+            label="Pin code"
+            name="pinCode"
+            rules={[
+              { required: true, message: "Please Enter PinCode" },
+              // {
+              //   pattern: /^[0-9]+$/,
+              //   message: "Please Enter Only Numbers",
+              // },
+            ]}
+          >
+            <input type="text" />
+          </Form.Item>
+        </Col>
+
+        <Col span={8}>
+          <Form.Item
+            label="Country"
+            name="country"
+            rules={[{ required: true, message: "Please Enter nationality" }]}
+          >
+            <select>
+              <option value="IN">India</option>
+              <option value="US">USA</option>
+              <option value="CA">Canada</option>
+              <option value="AS">Australia</option>
+            </select>
+          </Form.Item>
+        </Col>
         <Col span={24}>
           <Form.Item
             label="About"
             name="about"
             rules={[{ required: true, message: "Please Enter Company About" }]}
           >
-            <TextArea />
+            <ReactQuill modules={modules} />
           </Form.Item>
         </Col>
 
-        <Col span={24}>
+        {/* <Col span={24}>
           <Form.Item
-            label="Address"
-            name="address"
-            rules={[
-              { required: true, message: "Please Enter Company Address" },
-            ]}
+            label="About"
+            name="about"
+            rules={[{ required: true, message: "Please Enter Company About" }]}
           >
-            <textarea />
+            <TextArea
+              placeholder="About Company"
+              style={{ height: 150 }}
+              // style={{ height: 120, resize: "none" }}
+            />
           </Form.Item>
-        </Col>
+        </Col> */}
       </Row>
     </>
   );

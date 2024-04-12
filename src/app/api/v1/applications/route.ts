@@ -13,10 +13,33 @@ export async function POST(request: NextRequest) {
 
   await sgMail.setApiKey(key);
 
+  // const generateRegistrationNumber = (() => {
+  //   let counter = 0;
+
+  //   return () => {
+  //     counter++;
+  //     const prefix = "ABC";
+  //     return `${prefix}-${counter.toString().padStart(3, "0")}`;
+  //   };
+
+  //   // let counter = 0;
+  //   // return () => {
+  //   //   counter++;
+  //   //   const randomLetters =
+  //   //     String.fromCharCode(65 + Math.floor(Math.random() * 26)) +
+  //   //     String.fromCharCode(65 + Math.floor(Math.random() * 26)) +
+  //   //     String.fromCharCode(65 + Math.floor(Math.random() * 26));
+  //   //   return `${randomLetters}-${counter.toString().padStart(3, "0")}`;
+  //   // };
+  // })();
+
   try {
     await validToken(request);
 
     const requestBody = await request.json();
+
+    // create Number Like ABC-001 ABC-002
+    // const registrationNumber = generateRegistrationNumber();
 
     const applications: any = await Application.create(requestBody);
 

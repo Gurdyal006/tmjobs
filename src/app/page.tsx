@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Col, Pagination, Row, message } from "antd";
 import axios from "axios";
+import { motion } from "framer-motion";
 
 import Divider from "@/components/Divider";
 import { useRouter } from "next/navigation";
@@ -11,7 +12,7 @@ import PageTitle from "@/components/PageTitle";
 import Filters from "@/components/Filters";
 
 function Home() {
-  const [jobs = [], setJobs] = useState([]);
+  const [jobs, setJobs] = useState([]);
   const [filters, setFilters] = useState<any>({
     searchText: "",
     location: "",
@@ -69,16 +70,19 @@ function Home() {
   useEffect(() => {
     fetchJobs();
   }, []);
+
   return (
     <div>
       <PageTitle title="DashBoard" />
 
-      <Filters
-        filters={filters}
-        setFilters={setFilters}
-        getData={fetchJobs}
-        handleReset={handleReset}
-      />
+      {jobs.length > 0 && (
+        <Filters
+          filters={filters}
+          setFilters={setFilters}
+          getData={fetchJobs}
+          handleReset={handleReset}
+        />
+      )}
 
       <Row gutter={[16, 16]}>
         {jobs.map((job: any) => (
@@ -88,42 +92,77 @@ function Home() {
             key={job._id}
             onClick={() => router.push(`/jobInfo/${job._id}`)}
           >
-            <div className="card flex flex-col gap-2 cursor-pointer p-3">
-              <h1 className="text-md">{job.title}</h1>
+            <motion.div
+              className="card flex flex-col gap-2 cursor-pointer p-3"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <motion.h1
+                className="text-md"
+                initial={{ opacity: 0, y: -100 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 1 * 0.1 }}
+              >
+                {job.title}
+              </motion.h1>
+
               <Divider />
 
-              <div className="flex justify-between">
+              <motion.div
+                className="flex justify-between"
+                initial={{ opacity: 0, y: -100 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 1 * 0.1 }}
+              >
                 <span>Company</span>
                 <span>{job.user.name}</span>
-              </div>
-              <div className="flex justify-between">
+              </motion.div>
+              <motion.div
+                className="flex justify-between"
+                initial={{ opacity: 0, y: -100 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 1 * 0.1 }}
+              >
                 <span>Location</span>
                 <span>{job.location}</span>
-              </div>
+              </motion.div>
 
-              <div className="flex justify-between">
+              <motion.div
+                className="flex justify-between"
+                initial={{ opacity: 0, y: -100 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 1 * 0.1 }}
+              >
                 <span>Salary</span>
                 <span>
                   {job.salaryFromRange} LPA - {job.salaryToRange} LPA
                 </span>
-              </div>
+              </motion.div>
 
-              <div className="flex justify-between">
+              <motion.div
+                className="flex justify-between"
+                initial={{ opacity: 0, y: -100 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 1 * 0.1 }}
+              >
                 <span>Work Mode</span>
                 <span>{job.workMode}</span>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </Col>
         ))}
       </Row>
-      <Pagination
-        className=" flex justify-end my-3"
-        current={currentPage}
-        total={totalJobs}
-        pageSize={pageSize}
-        onChange={handlePageChange}
-        showSizeChanger={false}
-      />
+
+      {jobs.length > 0 && (
+        <Pagination
+          className=" flex justify-end my-3"
+          current={currentPage}
+          total={totalJobs}
+          pageSize={pageSize}
+          onChange={handlePageChange}
+          showSizeChanger={false}
+        />
+      )}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { ConfigProvider, message } from "antd";
+import { ConfigProvider, Tooltip, message } from "antd";
 import { usePathname } from "next/navigation";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +8,19 @@ import { SetCurrentUser } from "@/redux/usersSlice";
 import Loader from "./Loader";
 import { SetLoading } from "@/redux/loaderSlice";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+
+import {
+  AlignLeftOutlined,
+  DoubleLeftOutlined,
+  DownloadOutlined,
+  FileAddOutlined,
+  HomeOutlined,
+  PoweroffOutlined,
+  SaveOutlined,
+  SettingOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 
 function LayoutProvider({ children }: { children: React.ReactNode }) {
   const { currentUser } = useSelector((state: any) => state.users);
@@ -19,27 +32,27 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
     {
       name: "Home",
       path: "/",
-      icon: "ri-home-7-line",
+      icon: <HomeOutlined />,
     },
     {
       name: "Profile",
       path: "/profile",
-      icon: "ri-shield-user-line",
+      icon: <UserOutlined />,
     },
     {
       name: "Applications",
       path: "/applications",
-      icon: "ri-file-list-2-line",
+      icon: <DownloadOutlined />,
     },
     {
       name: "Settings",
       path: "/settings",
-      icon: "ri-settings-2-line",
+      icon: <SettingOutlined />,
     },
     {
       name: "Saved",
       path: "/saved",
-      icon: "ri-save-line",
+      icon: <SaveOutlined />,
     },
   ]);
 
@@ -55,6 +68,7 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
         const empTempMenu = menuItems;
         empTempMenu[2].name = "Posted Jobs";
         empTempMenu[2].path = "/jobs";
+        empTempMenu[2].icon = <FileAddOutlined />;
         empTempMenu[3].name = "Skills";
         empTempMenu[3].path = "/technologies";
         setMenuItems(empTempMenu);
@@ -98,17 +112,12 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <html lang="en">
-      <head>
-        <link
-          href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css"
-          rel="stylesheet"
-        />
-      </head>
+      <head></head>
       <body>
         <ConfigProvider
           theme={{
             token: {
-              colorPrimary: "#213555",
+              colorPrimary: "#000000",
             },
           }}
         >
@@ -126,18 +135,32 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
                   }}
                 >
                   <div className="logo">
-                    {isSidebarExpanded && <h1>Job Portal</h1>}
+                    {isSidebarExpanded && (
+                      <motion.h1
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -50 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        Job Portal
+                      </motion.h1>
+                    )}
                     {!isSidebarExpanded && (
-                      <i
-                        className="ri-menu-2-line"
+                      <AlignLeftOutlined
+                        className="custom-icon"
                         onClick={() => setIsSidebarExpanded(!isSidebarExpanded)}
-                      ></i>
+                      />
                     )}
                     {isSidebarExpanded && (
-                      <i
-                        className="ri-close-line"
+                      <DoubleLeftOutlined
+                        className="custom-icon"
                         onClick={() => setIsSidebarExpanded(!isSidebarExpanded)}
-                      ></i>
+                      />
+
+                      // <i
+                      //   icon={<DownloadOutlined />}
+                      //   onClick={() => setIsSidebarExpanded(!isSidebarExpanded)}
+                      // ></i>
                     )}
                   </div>
 
@@ -158,7 +181,7 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
                           key={index}
                           onClick={() => router.push(item.path)}
                         >
-                          <i className={item.icon}></i>
+                          {item.icon}
                           <span>{isSidebarExpanded && item.name}</span>
                         </div>
                       );
@@ -174,7 +197,15 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
                       </div>
                     )}
 
-                    <i className="ri-logout-box-r-line" onClick={onLogout}></i>
+                    {/* // logout  */}
+                    <Tooltip title="Click to Logout">
+                      <PoweroffOutlined
+                        className="custom-icon"
+                        onClick={onLogout}
+                      />
+                    </Tooltip>
+
+                    {/* <i className="ri-logout-box-r-line" onClick={onLogout}></i> */}
                   </div>
                 </div>
                 <div className="body">{children}</div>

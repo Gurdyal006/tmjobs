@@ -37,17 +37,23 @@ function EmployerInfo({ employerInfo }: { employerInfo: any }) {
 
             <div className="flex justify-between">
               <span>Address</span>
-              <span>{employerInfo.address}</span>
+              <span>
+                {employerInfo.city},{employerInfo.state},{employerInfo.pinCode},
+                {employerInfo.country}
+              </span>
             </div>
           </div>
         </Col>
         <Col span={24} className="my-3">
           <Divider />
-          <h1 className="text-md">
-            <b>About</b>
-          </h1>
+          <h1 className="text-md">About</h1>
+          <div
+            className="scrollable-div"
+            style={{ maxHeight: "250px", overflow: "auto" }}
+            dangerouslySetInnerHTML={{ __html: employerInfo.about }}
+          />
 
-          <span>{employerInfo.about}</span>
+          {/* <span>{employerInfo.about}</span> */}
         </Col>
       </Row>
     </>

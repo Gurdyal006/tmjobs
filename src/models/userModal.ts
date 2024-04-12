@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    // avatar: {
+    //   type: String, // cloudinary url
+    //   required: true,
+    // },
     isAdmin: {
       type: Boolean,
       required: true,
@@ -47,6 +51,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    projects: {
+      type: [],
+      required: false,
+    },
 
     // additional fields for employer
     establishmentYear: {
@@ -65,7 +73,19 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    address: {
+    city: {
+      type: String,
+      required: false,
+    },
+    state: {
+      type: String,
+      required: false,
+    },
+    pinCode: {
+      type: String,
+      required: false,
+    },
+    country: {
       type: String,
       required: false,
     },

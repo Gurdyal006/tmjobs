@@ -21,7 +21,7 @@
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
-  background-color: var(--primary);
+  background-color: #000000;
   border-radius: 4px;
   padding: 5px 20px;
   max-width: 250px;
@@ -74,6 +74,7 @@
   color: var(--primary) !important;
   border-radius: 4px;
   font-size: large;
+  padding: 10px;
 }
 
 .user-info {
@@ -82,7 +83,7 @@
   padding: 10px;
   color: white !important;
   font-size: 14px;
-  background-color: rgb(55 70 120);
+  background-color: #808080;
   border-radius: 4px;
   margin-bottom: 20px;
 }

@@ -22,8 +22,13 @@ function Applications() {
         `/api/v1/applications?user=${currentUser._id}`
       );
 
-      setApplications(response.data.data);
-      console.log(response.data.data);
+      // if job data is exist check
+      const filteredApplications = response.data.data.filter(
+        (application: any) => application.job
+      );
+
+      setApplications(filteredApplications);
+      console.log(filteredApplications);
     } catch (error: any) {
       message.error(error.response.data.message || "something went wrong!!!");
     } finally {
@@ -36,7 +41,11 @@ function Applications() {
   }, []);
 
   const tableColumns: any = [
-    { title: "Application ID", dataIndex: "_id" },
+    {
+      title: "Application ID",
+      dataIndex: "regId",
+      // render: (job: any) => job?.regId,
+    },
     { title: "Job Title", dataIndex: "job", render: (job: any) => job?.title },
     {
       title: "Company",

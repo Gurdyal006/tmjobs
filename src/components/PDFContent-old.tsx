@@ -10,7 +10,6 @@ const PDFContent = ({ userInfo }: any) => {
     if (userInfo) {
       const doc: any = new jsPDF();
       let yPos = 20;
-      doc.setFont("Roboto");
 
       // Add logo
       const logoUrl =
@@ -53,54 +52,14 @@ const PDFContent = ({ userInfo }: any) => {
 
       yPos += careerObjectiveLines.length * 10; // Adjust spacing based on font size
       yPos += 5;
-
       // Add skills section
-      doc.setFontSize(16);
-      doc.text("Skills", 20, yPos, {
-        align: "left",
-        fillColor: [255, 105, 180],
-      });
-      yPos += 5;
-
-      // Initialize variables for tag rendering
-      let currentXPos = 20; // Starting X position for the first tag
-      let currentYPos = yPos; // Starting Y position for the first tag
-      const maxWidth = doc.internal.pageSize.width - 40; // Maximum width for tags
-
-      // Render skills using Ant Design tags with custom styling
-      userInfo.skills.forEach((skill: string) => {
-        const tagWidth = doc.getStringUnitWidth(skill) * 4 + 10; // Adjust multiplier to fit the tag width
-        const tagHeight = 8; // Height of the tag
-
-        // Check if tag exceeds the maximum width
-        if (currentXPos + tagWidth > maxWidth) {
-          // Move to the next line
-          currentXPos = 20; // Reset X position
-          currentYPos += 15; // Increase Y position for the next line
-        }
-
-        // Render Tag component with custom styling
-        doc.setFillColor("#808080"); // Background color of the tag (Grey)
-        doc.setDrawColor("#000000"); // Border color of the tag (Black)
-        doc.roundedRect(
-          currentXPos,
-          currentYPos,
-          tagWidth,
-          tagHeight,
-          2,
-          2,
-          "FD"
-        ); // Draw rounded rectangle for tag background with border
-        doc.setTextColor(51, 51, 51); // Text color of the tag
-        doc.setFontSize(12); // Font size of the tag text
-        doc.text(skill, currentXPos + 5, currentYPos + 5); // Adjust the position of the text within the tag
-
-        // Update current X position for the next tag
-        currentXPos += tagWidth + 5; // Increase X position for the next tag with a margin
-      });
-
-      // Update Y position after rendering all tags
-      yPos = currentYPos + 20;
+      // doc.setFontSize(16);
+      // doc.text("Skills", 20, yPos, {
+      //   align: "left",
+      //   fillColor: [255, 105, 180],
+      // });
+      // yPos += 5;
+      // yPos = addTable(doc, yPos, userInfo?.skills, ["technology", "rating"]);
 
       // Add education section
       doc.setFontSize(16);
@@ -129,48 +88,6 @@ const PDFContent = ({ userInfo }: any) => {
           "period",
         ]);
       }
-
-      userInfo?.projects.forEach((project: any, index: number) => {
-        // Check if there's enough space on the current page for the project details
-        if (yPos + 50 > doc.internal.pageSize.height) {
-          // If not, add a new page
-          doc.addPage();
-          // Reset yPos to top of the new page or desired starting position
-          yPos = 20; // Adjust as needed
-        }
-
-        if (yPos === 20) {
-          doc.setFontSize(18);
-          doc.text("Project Details", 20, yPos);
-          yPos += 20;
-        }
-
-        doc.setFontSize(12);
-        doc.text(`Project Name: ${project.name}`, 20, yPos);
-        yPos += 10;
-        doc.text(`Role: ${project.role}`, 20, yPos);
-        yPos += 10;
-        doc.text(`Team Size: ${project.teamSize}`, 20, yPos);
-        // Align "Project Overview" text properly
-        const projectOverviewLines = doc.splitTextToSize(
-          project.projectOverview,
-          170
-        );
-        const overviewHeight = projectOverviewLines.length * 10;
-        yPos += 10;
-        doc.text("Project Overview:", 20, yPos);
-        yPos += 10; // Add some space before the text
-        projectOverviewLines.forEach((line: string) => {
-          doc.text(line, 20, yPos);
-          yPos += 5; // Move to the next line
-        });
-        yPos += 10; // Add some space after the text
-
-        // Add additional space between projects, adjust as needed
-        if (index < userInfo.projects.length - 1) {
-          yPos += 20;
-        }
-      });
 
       // const formatDate = (date: any) => {
       //   const options: any = { day: "2-digit", month: "long", year: "numeric" };

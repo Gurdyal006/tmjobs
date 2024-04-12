@@ -12,7 +12,10 @@ export async function POST(request: NextRequest) {
 
     const requestBody = await request.json();
 
-    const Jobs = await JobModel.create({ ...requestBody, user: userId });
+    const Jobs = await JobModel.create({
+      ...requestBody,
+      user: userId,
+    });
 
     return NextResponse.json({
       message: "Job created successfully",
@@ -51,6 +54,7 @@ export async function GET(request: NextRequest) {
     const Jobs = await JobModel.find(filterObject)
       .populate("user")
       .skip(skip)
+      .sort({ createdAt: -1 })
       .limit(pageSize);
 
     const JobsTotal = await JobModel.countDocuments(filterObject);

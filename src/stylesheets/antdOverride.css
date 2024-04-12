@@ -4,3 +4,18 @@
 .ant-form-item-label {
   padding: 0px !important;
 }
+
+/* // rect quill editor */
+.ql-snow.ql-toolbar button svg,
+.ql-snow .ql-toolbar button svg {
+  height: auto !important;
+}
+
+/* // multiselect dropdown show box */
+.ant-select-selection-search {
+  display: none !important;
+}
+
+.ant-select-item-option-selected {
+  background-color: lightgray !important;
+}

@@ -1,4 +1,4 @@
-import { Col, Divider, Row, Table } from "antd";
+import { Card, Col, Divider, Row, Table, Tag } from "antd";
 
 function EmployeeInfo({ employeeInfo }: { employeeInfo: any }) {
   const EducationColumns = [
@@ -13,17 +13,6 @@ function EmployeeInfo({ employeeInfo }: { employeeInfo: any }) {
     {
       title: "Percentage",
       dataIndex: "percentage",
-    },
-  ];
-
-  const skillsColumns = [
-    {
-      title: "Technology",
-      dataIndex: "technology",
-    },
-    {
-      title: "Rating (Out of 10)",
-      dataIndex: "rating",
     },
   ];
 
@@ -45,6 +34,15 @@ function EmployeeInfo({ employeeInfo }: { employeeInfo: any }) {
 
   return (
     <Row>
+      <style>
+        {`
+        
+          .custom-table .ant-table-thead > tr > th {
+            background-color: #000000;
+            color: #ffffff
+          }
+        `}
+      </style>
       <Col span={12}>
         <div className="flex flex-col gap-3">
           <div className="flex justify-between">
@@ -72,23 +70,26 @@ function EmployeeInfo({ employeeInfo }: { employeeInfo: any }) {
 
       <Col span={24} className="my-3">
         <h1 className="text-md">
+          <b>Skills</b>
+        </h1>
+        <div>
+          {employeeInfo.skills.map((skill: string, index: number) => (
+            <Tag key={index} color="green">
+              {skill}
+            </Tag>
+          ))}
+        </div>
+      </Col>
+
+      <Col span={24} className="my-3">
+        <h1 className="text-md">
           <b>Education</b>
         </h1>
         <Table
           columns={EducationColumns}
           dataSource={employeeInfo.education}
           pagination={false}
-        />
-      </Col>
-
-      <Col span={24} className="my-3">
-        <h1 className="text-md">
-          <b>Skills</b>
-        </h1>
-        <Table
-          columns={skillsColumns}
-          dataSource={employeeInfo.skills}
-          pagination={false}
+          // className="custom-table"
         />
       </Col>
 
@@ -100,7 +101,30 @@ function EmployeeInfo({ employeeInfo }: { employeeInfo: any }) {
           columns={experienceColumns}
           dataSource={employeeInfo.experience}
           pagination={false}
+          // className="custom-table"
         />
+      </Col>
+      <Col span={24} className="my-3">
+        <h1 className="text-md">
+          <b>Projects</b>
+        </h1>
+        <Row gutter={[16, 16]}>
+          {employeeInfo.projects.map((project: any, index: number) => (
+            <Col key={index} span={24}>
+              <Card title={project.name} style={{ width: "100%" }}>
+                <p>
+                  <b>Role:</b> {project.role}
+                </p>
+                <p>
+                  <b>Team Size:</b> {project.teamSize}
+                </p>
+                <p>
+                  <b>Project Overview:</b> {project.projectOverview}
+                </p>
+              </Card>
+            </Col>
+          ))}
+        </Row>
       </Col>
     </Row>
   );

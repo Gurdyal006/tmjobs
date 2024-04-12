@@ -6,6 +6,7 @@ body {
   margin: 0;
   padding: 0;
   color: #3b3a3a;
+  background-image: url("../../public/bg-login.jpg") !important;
 }
 
 * {
@@ -20,14 +21,15 @@ select {
   width: 100%;
   border: 1px solid #c6c6c6;
   padding-left: 15px !important;
-  border-radius: 2px;
+  border-radius: 5px !important;
 }
 
 input:focus,
 textarea:focus,
 select:focus {
   outline: none;
-  border: 1px solid #353535;
+  border: 1px solid #353535 !important;
+  border-radius: 5px !important;
 }
 
 textarea {
@@ -69,14 +71,45 @@ table {
   border-radius: 2px !important;
 }
 
-.ri-edit-circle-fill {
-  color: #259751 !important;
-}
-
-.ri-delete-bin-6-line {
-  color: #ee3535 !important;
-}
-
 .ri-delete-bin-line {
   color: #ee3535 !important;
+}
+
+.custom-icon {
+  color: #fff;
+  font-size: 24px;
+}
+
+.custom-icon-edit {
+  color: #259751 !important;
+  font-size: 24px;
+}
+.custom-icon-remove {
+  color: #ee3535 !important;
+  font-size: 24px;
+}
+
+.custom-icon-profile {
+  color: #ffc374 !important;
+  font-size: 24px;
+}
+
+.scrollable-div::-webkit-scrollbar {
+  width: 12px; /* Width of the scrollbar */
+}
+
+.scrollable-div::-webkit-scrollbar-thumb {
+  background-color: black; /* Color of the scrollbar thumb */
+  border-radius: 6px; /* Rounded corners for the thumb */
+}
+
+.top-navigation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #000;
+  color: #fff;
+  padding: 10px 20px;
+  z-index: 1000; /* Ensure it stays above other content */
 }

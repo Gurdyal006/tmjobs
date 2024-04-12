@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import { SetLoading } from "@/redux/loaderSlice";
 import { MinusCircleOutlined } from "@ant-design/icons";
-import { Form, Row, Col, Button, message, Select } from "antd";
+import { Form, Row, Col, Button, message } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -27,16 +27,6 @@ function EmployeeForm() {
   useEffect(() => {
     fetchSkills();
   }, []);
-
-  const MAX_COUNT = 100;
-  const suffix = (
-    <>
-      <span>
-        {skillData && skillData.length} / {MAX_COUNT}
-      </span>
-      <i className="ri-arrow-down-double-line"></i>
-    </>
-  );
 
   return (
     <>
@@ -71,30 +61,6 @@ function EmployeeForm() {
         <Col span={24}>
           <Form.Item label="Carrier objectives" name="carrierObjective">
             <TextArea />
-          </Form.Item>
-        </Col>
-
-        <Col span={24}>
-          <Form.Item label="Skills" name="skills">
-            <Select
-              mode="multiple"
-              maxCount={MAX_COUNT}
-              style={{ width: "100%" }}
-              suffixIcon={suffix}
-              placeholder="Please select your skills"
-            >
-              <option value="none" selected disabled hidden>
-                Select Job Type
-              </option>
-              {/* {console.log(skillData, "skillData")} */}
-              {skillData &&
-                skillData.map((item: any) => (
-                  // eslint-disable-next-line react/jsx-key
-                  <option key={item._id} value={item.title}>
-                    {item.title}
-                  </option>
-                ))}
-            </Select>
           </Form.Item>
         </Col>
       </Row>
@@ -184,6 +150,86 @@ function EmployeeForm() {
         </Form.List>
       </div>
 
+      {/* skills */}
+      <div
+        style={{
+          marginTop: 35,
+        }}
+      >
+        <h1 className="text-md">Skills</h1>
+        <Form.List name="skills">
+          {(fields, { add, remove }) => (
+            <>
+              {fields.map(({ key, name, ...restField }) => (
+                <Row
+                  key={key}
+                  gutter={[16, 16]}
+                  align="bottom"
+                  className="my-3"
+                >
+                  <Col span={8}>
+                    <Form.Item
+                      {...restField}
+                      name={[name, "technology"]}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Required",
+                        },
+                      ]}
+                      label="Technology"
+                    >
+                      <select style={{ width: "100%" }}>
+                        <option value="none">Please select your skill</option>
+                        {skillData?.map((skill: any, index: any) => (
+                          <>
+                            <option key={index} value={skill.title}>
+                              {skill.title}
+                            </option>
+                          </>
+                        ))}
+                      </select>
+                      {/* <input type="text" /> */}
+                    </Form.Item>
+                  </Col>
+
+                  <Col span={4}>
+                    <Form.Item
+                      label="Rating (Out of 10)"
+                      {...restField}
+                      name={[name, "rating"]}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Required",
+                        },
+                        {
+                          pattern: /^(10|[1-9])$/, // Regex pattern to match numbers from 1 to 9
+                          message: "Please rating from 1 to 10",
+                        },
+                      ]}
+                      // label="Rating (Out of 10)"
+                    >
+                      <input type="number" pattern="^(10|[1-9])$" />
+                    </Form.Item>
+                  </Col>
+
+                  <MinusCircleOutlined
+                    className="custom-icon-remove m-3"
+                    onClick={() => remove(name)}
+                  />
+                </Row>
+              ))}
+              <Form.Item className="my-2">
+                <Button type="dashed" onClick={() => add()} block>
+                  <b> Add Skill</b>
+                </Button>
+              </Form.Item>
+            </>
+          )}
+        </Form.List>
+      </div>
+
       {/* experience */}
       <div
         style={{
@@ -227,7 +273,7 @@ function EmployeeForm() {
                           message: "Required",
                         },
                       ]}
-                      label="Designation"
+                      label="Role"
                     >
                       <input type="role" />
                     </Form.Item>
@@ -262,101 +308,6 @@ function EmployeeForm() {
               <Form.Item className="my-2">
                 <Button type="dashed" onClick={() => add()} block>
                   <b> Add Experience</b>
-                </Button>
-              </Form.Item>
-            </>
-          )}
-        </Form.List>
-      </div>
-
-      {/* project Details */}
-      <div
-        style={{
-          marginTop: 35,
-        }}
-      >
-        <h1 className="text-md">Add Projects</h1>
-        <Form.List name="projects">
-          {(fields, { add, remove }) => (
-            <>
-              {fields.map(({ key, name, ...restField }) => (
-                <Row
-                  key={key}
-                  gutter={[16, 16]}
-                  align="bottom"
-                  className="my-3"
-                >
-                  <Col span={8}>
-                    <Form.Item
-                      {...restField}
-                      name={[name, "name"]}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Required",
-                        },
-                      ]}
-                      label="Name"
-                    >
-                      <input type="text" />
-                    </Form.Item>
-                  </Col>
-
-                  <Col span={8}>
-                    <Form.Item
-                      {...restField}
-                      name={[name, "role"]}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Required",
-                        },
-                      ]}
-                      label="Role"
-                    >
-                      <input type="role" />
-                    </Form.Item>
-                  </Col>
-
-                  <Col span={4}>
-                    <Form.Item
-                      {...restField}
-                      name={[name, "teamSize"]}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Required",
-                        },
-                      ]}
-                      label="Team Size"
-                    >
-                      <input type="number" />
-                    </Form.Item>
-                  </Col>
-                  <Col span={20}>
-                    <Form.Item
-                      {...restField}
-                      name={[name, "projectOverview"]}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Required",
-                        },
-                      ]}
-                      label="Description"
-                    >
-                      <textarea />
-                    </Form.Item>
-                  </Col>
-                  <MinusCircleOutlined
-                    className="custom-icon-remove m-3"
-                    onClick={() => remove(name)}
-                  />
-                </Row>
-              ))}
-              <Form.Item className="my-2">
-                <Button type="dashed" onClick={() => add()} block>
-                  <b> Add Project</b>
                 </Button>
               </Form.Item>
             </>

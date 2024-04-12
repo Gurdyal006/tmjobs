@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "antd";
+import { Button, Col, Form, Input, Row } from "antd";
 
 const Filters = ({ filters, setFilters, getData, handleReset }: any) => {
   const handleSearchTextChange = (e: any) => {
@@ -16,17 +16,20 @@ const Filters = ({ filters, setFilters, getData, handleReset }: any) => {
   };
 
   return (
-    <div className="flex  gap-3 my-3 items-end">
-      <div>
-        {/* <span>Search</span> */}
-        <input
-          type="text"
-          value={filters.searchText}
-          onChange={handleSearchTextChange}
-          placeholder="search job title"
-        />
-      </div>
-      {/* <div>
+    <Form className="flex  gap-3 my-3 items-end">
+      <Row gutter={16}>
+        <Col span={12}>
+          <Form.Item>
+            <input
+              type="text"
+              value={filters.searchText}
+              onChange={handleSearchTextChange}
+              placeholder="Search job title"
+              style={{ width: "300px" }}
+            />
+          </Form.Item>
+        </Col>
+        {/* <div>
         <span>Search Location</span>
         <select value={filters.location} onChange={handleLocationChange}>
           <option value="none">select location</option>
@@ -35,13 +38,18 @@ const Filters = ({ filters, setFilters, getData, handleReset }: any) => {
           <option value="Pathankot">Pathankot</option>
         </select>
       </div> */}
-      {/* {filters.searchText !== "" && ( */}
-      <Button type="primary" onClick={handleSearch}>
-        Search
-      </Button>
-      {/* )} */}
-      <Button onClick={handleReset}>Reset</Button>
-    </div>
+      </Row>
+      <Row>
+        <Col span={24} style={{ textAlign: "right" }}>
+          <Button type="primary" onClick={handleSearch}>
+            Search
+          </Button>
+          <Button onClick={handleReset} style={{ marginLeft: 8 }}>
+            Reset
+          </Button>
+        </Col>
+      </Row>
+    </Form>
   );
 };
 

@@ -1,8 +1,14 @@
 "use client";
 import ApplicationModal from "@/components/ApplicationModal";
+import Exportcsv from "@/components/Exportcsv";
 import Filters from "@/components/Filters";
 import PageTitle from "@/components/PageTitle";
 import { SetLoading } from "@/redux/loaderSlice";
+import {
+  CloseSquareOutlined,
+  FormOutlined,
+  ProfileOutlined,
+} from "@ant-design/icons";
 import { Button, Col, Input, Row, Table, Tooltip, message } from "antd";
 import axios from "axios";
 import moment from "moment";
@@ -19,7 +25,8 @@ function Jobs() {
     searchText: "",
   });
 
-  const [jobs, setJobs] = useState<any>(null);
+  const [jobs = [], setJobs] = useState<any>(null);
+
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -42,6 +49,7 @@ function Jobs() {
 
       setJobs(response.data.data);
       setTotalJobs(response.data.total);
+      // setCurrentPage(page); // Update currentPage state
     } catch (error: any) {
       message.error(error.message);
     } finally {
@@ -89,16 +97,51 @@ function Jobs() {
     fetchJobs();
   }, []);
 
+  // const downloadCsvData = () => {
+  //   console.log("2222222222");
+
+  //   <Exportcsv jobData={jobs} />;
+  // };
+
   const tableColumns: any = [
-    { title: "Title", dataIndex: "title" },
-    { title: "Job Type", dataIndex: "jobType" },
-    { title: "Experience", dataIndex: "experience" },
+    {
+      title: "Title",
+      dataIndex: "title",
+      // sorter: (a: { title: string }, b: { title: string }) => {
+      //   return a.title.localeCompare(b.title);
+      // },
+    },
+    {
+      title: "Job Type",
+      dataIndex: "jobType",
+      render: (text: any) => {
+        switch (text) {
+          case "full-time":
+            return "Full Time";
+          case "part-time":
+            return "Part Time";
+          case "contract":
+            return "Contract";
+          default:
+            return text; // Return original text if it doesn't match any case
+        }
+      },
+    },
+    {
+      title: "Experience",
+      dataIndex: "experience",
+      render: (text: any) => `${text} yrs`,
+    },
     { title: "Location", dataIndex: "location" },
-    { title: "Work Mode", dataIndex: "workMode" },
+    {
+      title: "Work Mode",
+      dataIndex: "workMode",
+      render: (text: any) => (text === "office" ? "Office" : "Remote"),
+    },
     // { title: "Salary From Range", dataIndex: "salaryFromRange" },
     // { title: "Salary To Range", dataIndex: "salaryToRange" },
     {
-      title: "Posted On",
+      title: "Created",
       dataIndex: "createdAt",
       render: (text: any) => moment(text).format("DD-MM-YYYY HH:mm:ss A"),
     },
@@ -108,25 +151,32 @@ function Jobs() {
       render: (text: any, record: any) => (
         <div className="flex gap-2">
           <Tooltip title="Edit Job">
-            <i
-              className="ri-edit-circle-fill"
+            <FormOutlined
+              className="custom-icon-edit"
               onClick={() => router.push(`/jobs/edit/${record._id}`)}
-            ></i>
+            />
           </Tooltip>
           <Tooltip title="Delete Job">
-            <i
-              className="ri-delete-bin-6-line"
+            <CloseSquareOutlined
+              className="custom-icon-remove"
               onClick={() => deleteJob(record._id)}
-            ></i>
+            />
           </Tooltip>
           <Tooltip title="Show Applications">
-            <i
+            <ProfileOutlined
+              className="custom-icon-profile"
+              onClick={() => {
+                setSelectedJobs(record);
+                setShowApplications(true);
+              }}
+            />
+            {/* <i
               className="ri-file-list-3-line"
               onClick={() => {
                 setSelectedJobs(record);
                 setShowApplications(true);
               }}
-            ></i>
+            ></i> */}
           </Tooltip>
         </div>
       ),
@@ -146,9 +196,12 @@ function Jobs() {
           />
         </div>
 
-        <Button type="primary" onClick={() => router.push("/jobs/new")}>
-          New Job
-        </Button>
+        <div className="flex gap-2">
+          <Button type="primary" onClick={() => router.push("/jobs/new")}>
+            Create Job
+          </Button>
+          {jobs && jobs.length > 0 && <Exportcsv jobData={jobs} />}
+        </div>
       </div>
 
       <div className="my-3">
@@ -156,6 +209,14 @@ function Jobs() {
           columns={tableColumns}
           dataSource={jobs}
           // pagination={{ pageSize: 3 }}
+          // pagination={{
+          //   pageSize: 2,
+          //   total: totalJobs,
+          //   current: currentPage, // Add current page state
+          //   onChange: (page) => {
+          //     fetchJobs(page);
+          //   },
+          // }}
         />
       </div>
 

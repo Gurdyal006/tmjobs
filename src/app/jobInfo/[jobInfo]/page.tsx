@@ -7,6 +7,11 @@ import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+const generateRegistrationNumber = (() => {
+  let counter = 0;
+  return () => `ABC-${(++counter).toString().padStart(3, "0")}`;
+})();
+
 function JobInfo() {
   const { currentUser } = useSelector((state: any) => state.users);
 
@@ -19,7 +24,6 @@ function JobInfo() {
   const dispatch = useDispatch();
 
   const params = useParams();
-  //   console.log(params?.jobInfo, "params");
 
   const fetchJob = async () => {
     try {
@@ -39,13 +43,9 @@ function JobInfo() {
   const fetchApplications = async () => {
     try {
       dispatch(SetLoading(true));
-
       const response = await axios.get(
         `/api/v1/applications?job=${params?.jobInfo}&user=${currentUser._id}`
       );
-
-      console.log(response, "response");
-
       setApplications(response.data.data);
     } catch (error: any) {
       message.error(error.message || "something went wrong!!!");
@@ -57,11 +57,13 @@ function JobInfo() {
   const onApplicationApply = async () => {
     try {
       SetLoading(true);
-      const response = await axios.post("/api/v1/applications", {
+      const response: any = await axios.post("/api/v1/applications", {
         job: jobData._id,
         user: currentUser._id,
         status: "Pending",
+        regId: generateRegistrationNumber(),
       });
+
       message.success(response.data.message);
     } catch (error: any) {
       message.error(error.message || "something went wrong!!!");
@@ -118,6 +120,13 @@ function JobInfo() {
               <span>Description</span>
               <Divider />
               <span>{jobData.description}</span>
+              {/* <ol className="no-numbers">
+                {jobData.description
+                  .split("\n")
+                  .map((item: any, index: any) => (
+                    <li key={index}>{item}</li>
+                  ))}
+              </ol> */}
               {applications.length > 0 && (
                 <span className="flex flex-col gap-2 card  my-2 p-3 info text-center">
                   You already applied this job. Employer respond you soon.

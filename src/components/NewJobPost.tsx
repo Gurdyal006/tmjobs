@@ -150,13 +150,13 @@ function NewJobPost() {
 
       <Col span={8}>
         <Form.Item label="Salary From Range" name="salaryFromRange">
-          <input type="number" />
+          <input type="number" min={100000} placeholder="min 100000" />
         </Form.Item>
       </Col>
 
       <Col span={8}>
         <Form.Item label="Salary To Range" name="salaryToRange">
-          <input type="number" />
+          <input type="number" min={200000} placeholder="min 200000" />
         </Form.Item>
       </Col>
     </Row>

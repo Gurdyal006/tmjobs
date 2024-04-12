@@ -7,6 +7,7 @@ import moment from "moment";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { ProfileOutlined } from "@ant-design/icons";
 
 function ApplicationModal({
   selectedJobs,
@@ -58,10 +59,21 @@ function ApplicationModal({
   }, []);
 
   const tableColumns: any = [
-    { title: "Application ID", dataIndex: "_id" },
-    { title: "Applicant", dataIndex: "user", render: (user: any) => user.name },
-    { title: "Name", dataIndex: "user", render: (user: any) => user.name },
-    { title: "Email", dataIndex: "user", render: (user: any) => user.email },
+    {
+      title: "Application ID",
+      dataIndex: "regId",
+      // render: (job: any) => job.regId,
+    },
+    {
+      title: "Applicant Name",
+      dataIndex: "user",
+      render: (user: any) => user.name,
+    },
+    {
+      title: "Applicant Email",
+      dataIndex: "user",
+      render: (user: any) => user.email,
+    },
     {
       title: "Status",
       dataIndex: "status",
@@ -88,16 +100,15 @@ function ApplicationModal({
       dataIndex: "_id",
       render: (applicationId: string, application: any) => (
         <Tooltip title="Click to view applicant info">
-          <i
+          <ProfileOutlined
+            className="custom-icon-profile"
+            onClick={() => router.push(`/userInfo/${application.user._id}`)}
+          />
+          {/* <i
             className="ri-file-list-3-line"
             onClick={() => router.push(`/userInfo/${application.user._id}`)}
-          ></i>
+          ></i> */}
         </Tooltip>
-        // <Button
-        //   onClick={() => router.push(`/userInfo/${application.user._id}`)}
-        // >
-        //   View
-        // </Button>
       ),
     },
   ];
@@ -108,10 +119,20 @@ function ApplicationModal({
       open={showApplications}
       onCancel={() => setShowApplications(false)}
       width={1200}
+      // footer={null}
+      footer={[
+        <Button key="cancel" onClick={() => setShowApplications(false)}>
+          Cancel
+        </Button>,
+      ]}
     >
       <Divider />
       <div className="my-3">
-        <Table columns={tableColumns} dataSource={applications} />
+        <Table
+          columns={tableColumns}
+          dataSource={applications}
+          pagination={false}
+        />
       </div>
     </Modal>
   );
