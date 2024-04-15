@@ -1,30 +1,47 @@
-import { Col, Form, Row } from "antd";
-// import TextArea from "antd/es/input/TextArea";
+// import { UploadOutlined } from "@ant-design/icons";
+import { Button, Col, Form, Row, Upload } from "antd";
+import TextArea from "antd/es/input/TextArea";
 import React from "react";
-import ReactQuill from "react-quill";
+// import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 function EmployerForm() {
   // Define modules with custom toolbar options
-  const modules = {
-    toolbar: [
-      [{ header: [1, 2, 3, 4, 5, 6, false] }],
-      [{ font: [] }],
-      ["bold", "italic", "underline", "strike", "blockquote"],
-      [
-        { list: "ordered" },
-        { list: "bullet" },
-        { indent: "-1" },
-        { indent: "+1" },
-      ],
-      ["link", "image", "video"],
-      ["clean"],
-    ],
-  };
+  // const modules = {
+  //   toolbar: [
+  //     [{ header: [1, 2, 3, 4, 5, 6, false] }],
+  //     [{ font: [] }],
+  //     ["bold", "italic", "underline", "strike", "blockquote"],
+  //     [
+  //       { list: "ordered" },
+  //       { list: "bullet" },
+  //       // { indent: "-1" },
+  //       // { indent: "+1" },
+  //     ],
+  //     ["link", "image", "video"],
+  //     ["clean"],
+  //   ],
+  // };
 
   return (
     <>
       <Row gutter={[16, 16]}>
+        {/* <Col span={8}>
+          <Form.Item
+            label="Upload Logo"
+            name="avatar"
+            rules={[{ required: true, message: "Please Upload Logo" }]}
+          >
+            <Upload
+              accept="image/*"
+              beforeUpload={() => false} // Disable default file upload behavior
+              maxCount={1} // Limit to one file
+            >
+              <Button icon={<UploadOutlined />}>Click to upload</Button>
+            </Upload>
+          </Form.Item>
+        </Col> */}
+
         <Col span={8}>
           <Form.Item
             label="Name"
@@ -148,7 +165,7 @@ function EmployerForm() {
             </select>
           </Form.Item>
         </Col>
-        <Col span={24}>
+        {/* <Col span={24}>
           <Form.Item
             label="About"
             name="about"
@@ -156,9 +173,9 @@ function EmployerForm() {
           >
             <ReactQuill modules={modules} />
           </Form.Item>
-        </Col>
+        </Col> */}
 
-        {/* <Col span={24}>
+        <Col span={24}>
           <Form.Item
             label="About"
             name="about"
@@ -170,7 +187,7 @@ function EmployerForm() {
               // style={{ height: 120, resize: "none" }}
             />
           </Form.Item>
-        </Col> */}
+        </Col>
       </Row>
     </>
   );

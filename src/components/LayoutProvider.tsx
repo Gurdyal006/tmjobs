@@ -112,7 +112,7 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <html lang="en">
-      <head></head>
+      {/* <head></head> */}
       <body>
         <ConfigProvider
           theme={{

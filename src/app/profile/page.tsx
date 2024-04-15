@@ -22,6 +22,8 @@ function Profile() {
   const { currentUser } = useSelector((state: any) => state.users);
   const [isBrowser, setIsBrowser] = useState<any>(false); // To track if the code is running in the browser
 
+  const [avatarFile, setAvatarFile] = useState<any>(null);
+
   useEffect(() => {
     setIsBrowser(true); // Set isBrowser to true when component mounts (i.e., when running in the browser)
   }, []);

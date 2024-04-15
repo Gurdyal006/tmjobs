@@ -97,13 +97,21 @@ function Jobs() {
     fetchJobs();
   }, []);
 
-  // const downloadCsvData = () => {
-  //   console.log("2222222222");
-
-  //   <Exportcsv jobData={jobs} />;
-  // };
-
   const tableColumns: any = [
+    // {
+    //   title: "Profile Pic",
+    //   dataIndex: "profilePic",
+    //   render(profilePic: string) {
+    //     return (
+    //       <img
+    //         src={profilePic}
+    //         alt="Profile Pic"
+    //         width="35"
+    //         className="rounded-full"
+    //       />
+    //     );
+    //   },
+    // },
     {
       title: "Title",
       dataIndex: "title",
