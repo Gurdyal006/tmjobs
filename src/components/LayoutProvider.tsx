@@ -78,6 +78,8 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
         const empTempMenu = menuItems;
         empTempMenu[2].name = "Applications";
         empTempMenu[2].path = "/applications";
+        empTempMenu[3].name = "Settings";
+        empTempMenu[3].path = "/settings";
         setMenuItems(empTempMenu);
       }
 
