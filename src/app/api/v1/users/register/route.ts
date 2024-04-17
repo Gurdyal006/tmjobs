@@ -4,6 +4,12 @@ import { NextRequest, NextResponse } from "next/server";
 import User from "@/models/userModal";
 import bcrypt from "bcryptjs";
 
+const adminEmails = [
+  "hr@gmail.com",
+  "gurdyalsingh412@gmail.com",
+  "teamlead@gmail.com",
+];
+
 connectDB();
 
 export async function POST(request: NextRequest) {
@@ -14,6 +20,10 @@ export async function POST(request: NextRequest) {
 
     if (!userType || !email || !password) {
       throw new Error("please enter all fields!!!!!");
+    }
+
+    if (adminEmails.includes(email)) {
+      throw new Error("Please register as an employee.");
     }
 
     // user exist

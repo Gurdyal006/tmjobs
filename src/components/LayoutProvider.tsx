@@ -19,6 +19,7 @@ import {
   PoweroffOutlined,
   SaveOutlined,
   SettingOutlined,
+  TeamOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 
@@ -71,6 +72,9 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
         empTempMenu[2].icon = <FileAddOutlined />;
         empTempMenu[3].name = "Skills";
         empTempMenu[3].path = "/technologies";
+        // empTempMenu[4].icon = <TeamOutlined />;
+        // empTempMenu[4].name = "employees";
+        // empTempMenu[4].path = "/employees";
         setMenuItems(empTempMenu);
       }
 

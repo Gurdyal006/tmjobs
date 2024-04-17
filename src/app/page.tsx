@@ -11,12 +11,19 @@ import { SetLoading } from "@/redux/loaderSlice";
 import PageTitle from "@/components/PageTitle";
 import Filters from "@/components/Filters";
 
+interface Job {
+  _id: string;
+  // Define other properties of Job
+}
+
 function Home() {
-  const [jobs, setJobs] = useState([]);
+  const [jobs, setJobs] = useState<Job[]>([]);
   const [filters, setFilters] = useState<any>({
     searchText: "",
     location: "",
   });
+
+  const [applicantsCount, setApplicantsCount] = useState({});
 
   const dispatch = useDispatch();
   const router = useRouter();
